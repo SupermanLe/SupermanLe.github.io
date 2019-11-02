@@ -1,0 +1,751 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<!-- Head tag -->
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="google-site-verification" content="xBT4GhYoi5qRD5tr338pgPM5OWHHIDR6mNg1a3euekI" />
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="">
+    <meta name="keyword"  content="">
+    <link rel="shortcut icon" href="/img/ironman-draw.png">
+    <!-- Place this tag in your head or just before your close body tag. -->
+    <script async defer src="https://buttons.github.io/buttons.js"></script>
+    <title>
+        
+          Swing用户界面布局 - SuperLe | Blog
+        
+    </title>
+
+    <link rel="canonical" href="http://yoursite.com/article/Swing用户界面布局/">
+
+    <!-- Bootstrap Core CSS -->
+    <link rel="stylesheet" href="/css/bootstrap.min.css">
+
+    <!-- Custom CSS --> 
+    <link rel="stylesheet" href="/css/beantech.min.css">
+    
+    <!-- Pygments Highlight CSS -->
+    <link rel="stylesheet" href="/css/highlight.css">
+
+    <link rel="stylesheet" href="/css/widget.css">
+
+    <link rel="stylesheet" href="/css/rocket.css">
+
+    <link rel="stylesheet" href="/css/signature.css">
+
+    <link rel="stylesheet" href="/css/toc.css">
+
+    <!-- Custom Fonts -->
+    <!-- <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css" rel="stylesheet" type="text/css"> -->
+    <!-- Hux change font-awesome CDN to qiniu -->
+    <link href="https://cdn.staticfile.org/font-awesome/4.5.0/css/font-awesome.min.css" rel="stylesheet" type="text/css">
+
+
+    <!-- Hux Delete, sad but pending in China
+    <link href='http://fonts.googleapis.com/css?family=Lora:400,700,400italic,700italic' rel='stylesheet' type='text/css'>
+    <link href='http://fonts.googleapis.com/css?family=Open+Sans:300italic,400italic,600italic,700italic,800italic,400,300,600,700,800' rel='stylesheet' type='text/
+    css'>
+    -->
+
+
+    <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
+    <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+    <!--[if lt IE 9]>
+        <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+        <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
+    <![endif]-->
+
+    <!-- ga & ba script hoook -->
+    <script></script>
+</head>
+
+
+<!-- hack iOS CSS :active style -->
+<body ontouchstart="">
+	<!-- Modified by Yu-Hsuan Yen -->
+<!-- Post Header -->
+<style type="text/css">
+    header.intro-header{
+        
+            background-image: url('/img/article_header/article_Swing_iu.jpg')
+            /*post*/
+        
+    }
+    
+</style>
+
+<header class="intro-header" >
+    <!-- Signature -->
+    <div id="signature">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+                
+                    <div class="post-heading">
+                        <div class="tags">
+                            
+                              <a class="tag" href="/tags/#Swing" title="Swing">Swing</a>
+                            
+                        </div>
+                        <h1>Swing用户界面布局</h1>
+                        <h2 class="subheading"></h2>
+                        <span class="meta">
+                            Posted by SuperLe on
+                            2019-07-01
+                        </span>
+                    </div>
+                
+
+
+                </div>
+            </div>
+        </div>
+    </div>
+</header>
+
+	
+    <!-- Navigation -->
+<nav class="navbar navbar-default navbar-custom navbar-fixed-top">
+    <div class="container-fluid">
+        <!-- Brand and toggle get grouped for better mobile display -->
+        <div class="navbar-header page-scroll">
+            <button type="button" class="navbar-toggle">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+            <a class="navbar-brand" href="/">SuperLe</a>
+        </div>
+
+        <!-- Collect the nav links, forms, and other content for toggling -->
+        <!-- Known Issue, found by Hux:
+            <nav>'s height woule be hold on by its content.
+            so, when navbar scale out, the <nav> will cover tags.
+            also mask any touch event of tags, unfortunately.
+        -->
+        <div id="huxblog_navbar">
+            <div class="navbar-collapse">
+                <ul class="nav navbar-nav navbar-right">
+                    <li>
+                        <a href="/">Home</a>
+                    </li>
+
+                    
+
+                        
+                    
+
+                        
+                        <li>
+                            <a href="/archive/">Archives</a>
+                        </li>
+                        
+                    
+
+                        
+                        <li>
+                            <a href="/tags/">Tags</a>
+                        </li>
+                        
+                    
+
+                        
+                        <li>
+                            <a href="/about/">About</a>
+                        </li>
+                        
+                    
+                    
+                </ul>
+            </div>
+        </div>
+        <!-- /.navbar-collapse -->
+    </div>
+    <!-- /.container -->
+</nav>
+<script>
+    // Drop Bootstarp low-performance Navbar
+    // Use customize navbar with high-quality material design animation
+    // in high-perf jank-free CSS3 implementation
+    var $body   = document.body;
+    var $toggle = document.querySelector('.navbar-toggle');
+    var $navbar = document.querySelector('#huxblog_navbar');
+    var $collapse = document.querySelector('.navbar-collapse');
+
+    $toggle.addEventListener('click', handleMagic)
+    function handleMagic(e){
+        if ($navbar.className.indexOf('in') > 0) {
+        // CLOSE
+            $navbar.className = " ";
+            // wait until animation end.
+            setTimeout(function(){
+                // prevent frequently toggle
+                if($navbar.className.indexOf('in') < 0) {
+                    $collapse.style.height = "0px"
+                }
+            },400)
+        }else{
+        // OPEN
+            $collapse.style.height = "auto"
+            $navbar.className += " in";
+        }
+    }
+</script>
+
+
+    <!-- Main Content -->
+    <!-- Modify by Yu-Hsuan Yen -->
+
+<!-- Post Content -->
+<article>
+    <div class="container">
+        <div class="row">
+
+            <!-- Post Container -->
+            <div class="
+                col-lg-8 col-lg-offset-2
+                col-md-10 col-md-offset-1
+                post-container">
+
+                <h2 id="1-Swing-组件"><a href="#1-Swing-组件" class="headerlink" title="1.  Swing 组件"></a>1.  Swing 组件</h2><p>​      java图形界面是由各种不同类型“元素”组成，例如：窗口、面板、标签、文本框、菜单栏、按钮、对话框等等，</p>
+<p>这些“元素” 统称为组件（Component）。</p>
+<p>​     组件按照不同功能：<strong>顶层容器</strong>、<strong>中间容器</strong>、<strong>基本组件</strong>。</p>
+<ul>
+<li><input checked="" disabled="" type="checkbox"> 顶层容器  ：属于窗口类组件，继承自java.awt.Window<ul>
+<li><input checked="" disabled="" type="checkbox"> 菜单栏</li>
+<li><input checked="" disabled="" type="checkbox"> 中间容器  ：继承自javax.swing.JComponent    <ul>
+<li><input checked="" disabled="" type="checkbox"> 基本组件一</li>
+<li><input checked="" disabled="" type="checkbox"> 基本组件二  </li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<h2 id="2-顶层容器"><a href="#2-顶层容器" class="headerlink" title="2.  顶层容器"></a>2.  顶层容器</h2><p>​      顶层容器属于窗口类的组件，可以独立显示，一个图形界面至少需要一个窗口载体：</p>
+<table>
+<thead>
+<tr>
+<th align="left">组件</th>
+<th align="left">描述</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="left">JFrame</td>
+<td align="left">大多数Swing图形界面程序使用JFrame作为顶层容器</td>
+</tr>
+<tr>
+<td align="left">JDialog</td>
+<td align="left">对话框</td>
+</tr>
+</tbody></table>
+<h2 id="3-中间容器"><a href="#3-中间容器" class="headerlink" title="3.  中间容器"></a>3.  中间容器</h2><p>​      中间容器充当基本组件的载体，不能独立显示在顶层容器。中间容器可以添加若干基本组件（同样也可以嵌套中间容器），对容器内的组件进行管理，可以给各种复杂的组件进行分组管理。</p>
+<p>常用中间容器（面板）：</p>
+<table>
+<thead>
+<tr>
+<th>组件</th>
+<th>描述</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>JPanel</td>
+<td>常见轻量级面板容器组件</td>
+</tr>
+<tr>
+<td>JScrollPane</td>
+<td>可以显示水平和垂直滚动条的面板组件</td>
+</tr>
+<tr>
+<td>JSplitPane</td>
+<td>带有分隔线的面板</td>
+</tr>
+<tr>
+<td>JTabbedPane</td>
+<td>选项卡面板</td>
+</tr>
+<tr>
+<td>JLayeredPane</td>
+<td>层级面板</td>
+</tr>
+</tbody></table>
+<hr>
+<p>特殊中间容器：</p>
+<table>
+<thead>
+<tr>
+<th>组件</th>
+<th>描述</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>JMenuBar</td>
+<td>菜单栏</td>
+</tr>
+<tr>
+<td>JToolBar</td>
+<td>工具栏</td>
+</tr>
+<tr>
+<td>JPopupMenu</td>
+<td>弹出菜单</td>
+</tr>
+<tr>
+<td>JInternalFrame</td>
+<td>内部窗口</td>
+</tr>
+</tbody></table>
+<h2 id="4-常用基本组件"><a href="#4-常用基本组件" class="headerlink" title="4.  常用基本组件"></a>4.  常用基本组件</h2><p>常用简单基本组件：</p>
+<table>
+<thead>
+<tr>
+<th>组件</th>
+<th>描述</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>JLabel</td>
+<td>标签</td>
+</tr>
+<tr>
+<td>JTextField</td>
+<td>文本框</td>
+</tr>
+<tr>
+<td>JButton</td>
+<td>按钮</td>
+</tr>
+<tr>
+<td>JRadioButton</td>
+<td>单选按钮</td>
+</tr>
+<tr>
+<td>JToggleButton</td>
+<td>开关按钮</td>
+</tr>
+<tr>
+<td>JCheckBox</td>
+<td>复选框</td>
+</tr>
+<tr>
+<td>JPasswordField</td>
+<td>密码输入框</td>
+</tr>
+<tr>
+<td>JList</td>
+<td>列表</td>
+</tr>
+<tr>
+<td>JComboBox</td>
+<td>下拉列表框</td>
+</tr>
+<tr>
+<td>JTextArea</td>
+<td>文本区域</td>
+</tr>
+<tr>
+<td>JProgressBar</td>
+<td>进度条</td>
+</tr>
+<tr>
+<td>JSlider</td>
+<td>滑块</td>
+</tr>
+</tbody></table>
+<hr>
+<p>选取器组件：</p>
+<table>
+<thead>
+<tr>
+<th>组件</th>
+<th>描述</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>JFileChooser</td>
+<td>文件选取器</td>
+</tr>
+<tr>
+<td>JColorChooser</td>
+<td>颜色选取器</td>
+</tr>
+</tbody></table>
+<p>较为复杂组件：</p>
+<table>
+<thead>
+<tr>
+<th>组件</th>
+<th>描述</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>JTable</td>
+<td>表格</td>
+</tr>
+<tr>
+<td>JTree</td>
+<td>树</td>
+</tr>
+</tbody></table>
+<h2 id="5-布局管理"><a href="#5-布局管理" class="headerlink" title="5.  布局管理"></a>5.  布局管理</h2><p>将Swing中的各种组件（JComponent）添加到面板容器中（JPanel），需要给面板容器指定布局管理器（LayoutManager），明确容器（Container）内的各个组件之间的排列布局方式。</p>
+<p>常用布局管理：</p>
+<table>
+<thead>
+<tr>
+<th>布局管理器</th>
+<th>描述</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>BorderLayout</td>
+<td>边界布局，将Container按方位分为五个区域（东、西、南、北、中），每个区域放置一个组件</td>
+</tr>
+<tr>
+<td>FlowLayout</td>
+<td>流式布局，按组件加入的顺序以水平方向排列，排满一行换下一行继续排列</td>
+</tr>
+<tr>
+<td>GridLayout</td>
+<td>网格布局，将Container按指定行列数分隔出若干网格，每个网格对应一个控件（按顺序）</td>
+</tr>
+<tr>
+<td>GridBagLayout</td>
+<td>网格袋布局，按网格划分Container，每个组件可占用一个或多个网格，可将组件垂直、水平或基线对齐</td>
+</tr>
+<tr>
+<td>BoxLayout</td>
+<td>箱式布局，将Container中的多个组件按水平或垂直的方式排列</td>
+</tr>
+<tr>
+<td>GroupLayout</td>
+<td>分组布局，将组件按层次分组（串行或并行），分别确定组件组在水平和垂直方向上的位置</td>
+</tr>
+<tr>
+<td>CardLayout</td>
+<td>卡片布局，将Container中的每个组件看作一张卡片，一次只能显示一张卡片，默认显示第一张卡片</td>
+</tr>
+<tr>
+<td>SpringLayout</td>
+<td>弹性布局，通过定义组件四条边的坐标位置来实现布局</td>
+</tr>
+<tr>
+<td>null</td>
+<td>绝对布局，通过设置组件在Container中的坐标位置来放置组件</td>
+</tr>
+</tbody></table>
+
+                
+
+                <hr>
+                <!-- Pager -->
+                <ul class="pager">
+                    
+                        <li class="previous">
+                            <a href="/article/Centos7安装mysql/" data-toggle="tooltip" data-placement="top" title="Centos7安装mysql">&larr; Previous Post</a>
+                        </li>
+                    
+                    
+                        <li class="next">
+                            <a href="/article/JXBrowser-JavaBridgeRCE-JavaScript/" data-toggle="tooltip" data-placement="top" title="JXBrowser-JavaBridgeRCE/JavaScript">Next Post &rarr;</a>
+                        </li>
+                    
+                </ul>
+
+                <br>
+                
+                <!-- require APlayer -->
+                
+                <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/aplayer@1.10/dist/APlayer.min.css">
+                <script src="https://cdn.jsdelivr.net/npm/aplayer@1.10/dist/APlayer.min.js"></script>
+                <script src="https://cdn.jsdelivr.net/npm/meting@1.2/dist/Meting.min.js"></script>
+
+                <div class="aplayer"
+                    data-id="2423410161"
+                    data-server="netease"
+                    data-type="playlist"
+                    data-fixed="true" >
+                </div>
+                
+
+                <!-- duoshuo Share start -->
+                
+                <!-- 多说 Share end-->
+
+                <!-- 多说评论框 start -->
+                
+                <!-- 多说评论框 end -->
+
+                <!-- disqus comment start -->
+                
+                <!-- disqus comment end -->
+
+                
+
+            </div>
+            
+            <!-- Tabe of Content -->
+            <!-- Table of Contents -->
+
+  
+    <style>
+      span.toc-nav-number{
+        display: none
+      }
+    </style>
+  
+    
+      <aside id="sidebar">
+        <div id="toc" class="toc-article">
+        <strong class="toc-title">Contents</strong>
+        
+          <ol class="toc-nav"><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#1-Swing-组件"><span class="toc-nav-number">1.</span> <span class="toc-nav-text">1.  Swing 组件</span></a></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#2-顶层容器"><span class="toc-nav-number">2.</span> <span class="toc-nav-text">2.  顶层容器</span></a></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#3-中间容器"><span class="toc-nav-number">3.</span> <span class="toc-nav-text">3.  中间容器</span></a></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#4-常用基本组件"><span class="toc-nav-number">4.</span> <span class="toc-nav-text">4.  常用基本组件</span></a></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#5-布局管理"><span class="toc-nav-number">5.</span> <span class="toc-nav-text">5.  布局管理</span></a></li></ol>
+        
+        </div>
+      </aside>
+    
+
+                
+            <!-- Sidebar Container -->
+            <div class="
+                col-lg-8 col-lg-offset-2
+                col-md-10 col-md-offset-1
+                sidebar-container">
+
+                <!-- Featured Tags -->
+                
+                <section>
+                    <!-- no hr -->
+                    <h5><a href="/tags/">FEATURED TAGS</a></h5>
+                    <div class="tags">
+                       
+                          <a class="tag" href="/tags/#Swing" title="Swing">Swing</a>
+                        
+                    </div>
+                </section>
+                
+
+                <!-- Friends Blog -->
+                
+            </div>
+        </div>
+    </div>
+</article>
+
+
+
+
+
+
+
+
+<!-- async load function -->
+<script>
+    function async(u, c) {
+      var d = document, t = 'script',
+          o = d.createElement(t),
+          s = d.getElementsByTagName(t)[0];
+      o.src = u;
+      if (c) { o.addEventListener('load', function (e) { c(null, e); }, false); }
+      s.parentNode.insertBefore(o, s);
+    }
+</script>
+<!-- anchor-js, Doc:http://bryanbraun.github.io/anchorjs/ -->
+<script>
+    async("https://cdn.bootcss.com/anchor-js/1.1.1/anchor.min.js",function(){
+        anchors.options = {
+          visible: 'hover',
+          placement: 'left',
+          icon: 'ℬ'
+        };
+        anchors.add().remove('.intro-header h1').remove('.subheading').remove('.sidebar-container h5');
+    })
+</script>
+<style>
+    /* place left on bigger screen */
+    @media all and (min-width: 800px) {
+        .anchorjs-link{
+            position: absolute;
+            left: -0.75em;
+            font-size: 1.1em;
+            margin-top : -0.1em;
+        }
+    }
+</style>
+
+
+
+    <!-- Footer -->
+    <!-- Footer -->
+<footer>
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+                <ul class="list-inline text-center">
+                
+                
+                
+
+                
+
+                
+
+                
+                    <li>
+                        <a target="_blank"  href="https://github.com/huweihuang">
+                            <span class="fa-stack fa-lg">
+                                <i class="fa fa-circle fa-stack-2x"></i>
+                                <i class="fa fa-github fa-stack-1x fa-inverse"></i>
+                            </span>
+                        </a>
+                    </li>
+                
+
+                
+                    <li>
+                        <a target="_blank"  href="https://www.linkedin.com/in/huweihuang">
+                            <span class="fa-stack fa-lg">
+                                <i class="fa fa-circle fa-stack-2x"></i>
+                                <i class="fa fa-linkedin fa-stack-1x fa-inverse"></i>
+                            </span>
+                        </a>
+                    </li>
+                
+
+                </ul>
+                <p class="copyright text-muted">
+                    Copyright &copy; SuperLe 2019 
+                    <br>
+                    Theme by <a href="http://beantech.org" target="_blank" rel="noopener">BeanTech</a> 
+                    <span style="display: inline-block; margin: 0 5px;">
+                        <i class="fa fa-heart"></i>
+                    </span> 
+                    re-Ported by <a href="https://github.com/SupermanLe/SupermanLe.github.io.git" target="_blank" rel="noopener">SuperLe</a> | 
+                    <iframe
+                        style="margin-left: 2px; margin-bottom:-5px;"
+                        frameborder="0" scrolling="0" width="91px" height="20px"
+                        src="https://ghbtns.com/github-btn.html?user=SupermanLe&repo=SupermanLe.github.io&type=star&count=true" >
+                    </iframe>
+                </p>
+            </div>
+        </div>
+    </div>
+</footer>
+
+<!-- jQuery -->
+<script src="/js/jquery.min.js"></script>
+
+<!-- Bootstrap Core JavaScript -->
+<script src="/js/bootstrap.min.js"></script>
+
+<!-- Custom Theme JavaScript -->
+<script src="/js/hux-blog.min.js"></script>
+
+
+<!-- async load function -->
+<script>
+    function async(u, c) {
+      var d = document, t = 'script',
+          o = d.createElement(t),
+          s = d.getElementsByTagName(t)[0];
+      o.src = u;
+      if (c) { o.addEventListener('load', function (e) { c(null, e); }, false); }
+      s.parentNode.insertBefore(o, s);
+    }
+</script>
+
+<!-- 
+     Because of the native support for backtick-style fenced code blocks 
+     right within the Markdown is landed in Github Pages, 
+     From V1.6, There is no need for Highlight.js, 
+     so Huxblog drops it officially.
+
+     - https://github.com/blog/2100-github-pages-now-faster-and-simpler-with-jekyll-3-0  
+     - https://help.github.com/articles/creating-and-highlighting-code-blocks/    
+-->
+<!--
+    <script>
+        async("http://cdn.bootcss.com/highlight.js/8.6/highlight.min.js", function(){
+            hljs.initHighlightingOnLoad();
+        })
+    </script>
+    <link href="http://cdn.bootcss.com/highlight.js/8.6/styles/github.min.css" rel="stylesheet">
+-->
+
+
+<!-- jquery.tagcloud.js -->
+<script>
+    // only load tagcloud.js in tag.html
+    if($('#tag_cloud').length !== 0){
+        async("http://yoursite.com/js/jquery.tagcloud.js",function(){
+            $.fn.tagcloud.defaults = {
+                //size: {start: 1, end: 1, unit: 'em'},
+                color: {start: '#bbbbee', end: '#0085a1'},
+            };
+            $('#tag_cloud a').tagcloud();
+        })
+    }
+</script>
+
+<!--fastClick.js -->
+<script>
+    async("https://cdn.bootcss.com/fastclick/1.0.6/fastclick.min.js", function(){
+        var $nav = document.querySelector("nav");
+        if($nav) FastClick.attach($nav);
+    })
+</script>
+
+
+<!-- Google Analytics -->
+
+
+<script>
+    // dynamic User by Hux
+    var _gaId = 'UA-XXXXXXXX-X';
+    var _gaDomain = 'yoursite';
+
+    // Originial
+    (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+    (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+    m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+    })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+    ga('create', _gaId, _gaDomain);
+    ga('send', 'pageview');
+</script>
+
+
+
+
+<!-- Baidu Tongji -->
+
+<script>
+    // dynamic User by Hux
+    var _baId = 'r45fhy7653897235wg5ye709d930f62e';
+
+    // Originial
+    var _hmt = _hmt || [];
+    (function() {
+      var hm = document.createElement("script");
+      hm.src = "//hm.baidu.com/hm.js?" + _baId;
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(hm, s);
+    })();
+</script>
+
+
+
+
+
+
+	<a id="rocket" href="#top" class=""></a>
+	<script type="text/javascript" src="/js/totop.js?v=1.0.0" async=""></script>
+    <script type="text/javascript" src="/js/toc.js?v=1.0.0" async=""></script>
+<!-- Image to hack wechat -->
+<img src="http://yoursite.com/img/icon_wechat.png" width="0" height="0" />
+<!-- Migrate from head to bottom, no longer block render and still work -->
+
+</body>
+
+</html>
